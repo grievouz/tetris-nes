@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="Tetris.Controls.TetrisGame"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="960" d:DesignWidth="1280" FontFamily="/Tetris;component/font/#Press Start 2P">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Tetris;component/images/background.PNG"/>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="14*"/>
+            <ColumnDefinition Width="16*"/>
+            <ColumnDefinition Width="12*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Viewbox>
+                <Label x:Name="TypeLabel" Content="A" FontFamily="/Tetris;component/font/#Press Start 2P" Foreground="White" FontSize="35" Margin="115,98,263,818" HorizontalContentAlignment="Right"/>
+            </Viewbox>
+        </Grid>
+
+        <Grid x:Name="GameGrid" Grid.Column="1" Margin="51,168,35,98">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0*"/>
+                <RowDefinition Height="0*"/>
+                <RowDefinition Height="0*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+        </Grid>
+
+        <Grid Grid.Column="2">
+            <Viewbox>
+                <Label x:Name="TopLabel" Content="000000" FontFamily="/Tetris;component/font/#Press Start 2P" Foreground="White" FontSize="42" Margin="33,134,66,771" HorizontalContentAlignment="Right"/>
+            </Viewbox>
+            <Viewbox>
+                <Label x:Name="ScoreLabel" Content="000000" FontFamily="/Tetris;component/font/#Press Start 2P" Foreground="White" FontSize="42" Margin="33,244,66,662" HorizontalContentAlignment="Right"/>
+            </Viewbox>
+            <Viewbox>
+                <Label x:Name="LevelLabel" Content="000000" FontFamily="/Tetris;component/font/#Press Start 2P" Foreground="White" FontSize="35" Margin="33,682,105,227" HorizontalContentAlignment="Right" HorizontalAlignment="Left"/>
+            </Viewbox>
+            <Viewbox>
+                <Label x:Name="LinesLabel" Content="00" FontFamily="/Tetris;component/font/#Press Start 2P" Foreground="White" FontSize="42" Margin="-162,60,387,849" Height="50" Width="130"/>
+            </Viewbox>
+        </Grid>
+    </Grid>
+</UserControl>
