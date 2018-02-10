@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Tetris.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="30" d:DesignWidth="50">
     <Border BorderBrush="Black" BorderThickness="1" RenderTransformOrigin="1,0">
         <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>
@@ -13,14 +13,13 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
+
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
+
             </Grid.RowDefinitions>
         </Grid>
     </Border>

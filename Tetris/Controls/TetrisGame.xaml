@@ -2,9 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:Tetris.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="960" d:DesignWidth="1280" FontFamily="/Tetris;component/font/#Press Start 2P">
+             d:DesignHeight="480" d:DesignWidth="640" FontFamily="/Tetris;component/font/#Press Start 2P">
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/Tetris;component/images/background.PNG"/>
@@ -19,9 +20,58 @@
             <Viewbox>
                 <Label x:Name="TypeLabel" Content="A" FontFamily="/Tetris;component/font/#Press Start 2P" Foreground="White" FontSize="35" Margin="115,98,263,818" HorizontalContentAlignment="Right"/>
             </Viewbox>
+            <Viewbox >
+                <controls:oldBlock x:Name="IShape" Margin="43,164,127,283"/>
+            </Viewbox>
+            <Viewbox>
+                <Label x:Name="ILabel" Margin="240,380,66,660" Content="000000" FontFamily="/Tetris;component/font/#Press Start 2P" Foreground="White" FontSize="42" HorizontalContentAlignment="Right"/>
+            </Viewbox>
+            <Viewbox>
+                <controls:oldBlock Margin="43,202,127,244" x:Name="JShape"/>
+            </Viewbox>
+            <Viewbox>
+                <Label x:Name="JLabel" Margin="240,380,66,475" Content="000000" FontFamily="/Tetris;component/font/#Press Start 2P" Foreground="White" FontSize="42" HorizontalContentAlignment="Right"/>
+            </Viewbox>
+            
+            <Viewbox>
+                <controls:oldBlock Margin="43,241,127,205" x:Name="TShape"/>
+            </Viewbox>
+            <Viewbox>
+                <Label x:Name="TLabel" Margin="240,380,66,290" Content="000000" FontFamily="/Tetris;component/font/#Press Start 2P" Foreground="White" FontSize="42" HorizontalContentAlignment="Right"/>
+            </Viewbox>
+            
+            <Viewbox>
+                <controls:oldBlock Margin="43,280,127,167" x:Name="LShape"/>
+            </Viewbox>
+            <Viewbox>
+                <Label x:Name="LLabel" Margin="240,380,66,105" Content="000000" FontFamily="/Tetris;component/font/#Press Start 2P" Foreground="White" FontSize="42" HorizontalContentAlignment="Right"/>
+            </Viewbox>
+            
+            <Viewbox>
+                <controls:oldBlock Margin="43,318,127,128" x:Name="SShape"/>
+            </Viewbox>
+            <Viewbox>
+                <Label x:Name="SLabel" Margin="240,380,66,-80" Content="000000" FontFamily="/Tetris;component/font/#Press Start 2P" Foreground="White" FontSize="42" HorizontalContentAlignment="Right"/>
+            </Viewbox>
+            
+            <Viewbox>
+                <controls:oldBlock Margin="43,357,127,89" x:Name="ZShape"/>
+            </Viewbox>
+            <Viewbox>
+                <Label x:Name="ZLabel" Margin="240,380,66,-265" Content="000000" FontFamily="/Tetris;component/font/#Press Start 2P" Foreground="White" FontSize="42" HorizontalContentAlignment="Right"/>
+            </Viewbox>
+           
+            <Viewbox>
+                <controls:oldBlock Margin="43,396,127,50" x:Name="OShape"/>
+            </Viewbox>
+            <Viewbox>
+                <Label x:Name="OLabel" Margin="240,430,66,-400" Content="000000" FontFamily="/Tetris;component/font/#Press Start 2P" Foreground="White" FontSize="42" HorizontalContentAlignment="Right"/>
+            </Viewbox>
+
         </Grid>
 
-        <Grid x:Name="GameGrid" Grid.Column="1" Margin="51,168,35,98">
+        <Grid x:Name="GameGrid" Grid.Column="1" Margin="26,85,19,46" RenderTransformOrigin="0.5,0.5">
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
@@ -73,6 +123,7 @@
             <Viewbox>
                 <Label x:Name="LinesLabel" Content="00" FontFamily="/Tetris;component/font/#Press Start 2P" Foreground="White" FontSize="42" Margin="-162,60,387,849" Height="50" Width="130"/>
             </Viewbox>
+            <controls:oldBlock x:Name="NextBlock" Margin="21,204,80,187"/>
         </Grid>
     </Grid>
 </UserControl>

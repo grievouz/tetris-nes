@@ -32,6 +32,63 @@ namespace Tetris
             _timer.Tick += GameTick;
             _timer.Interval = new TimeSpan(0, 0, 0, 0, _tickSpeed);
             GameStart();
+
+            TetrisGame.IShape.SetPreviewShape(
+                new[]{
+                    new Point(0, 0),
+                    new Point(-1, 0),
+                    new Point(1, 0),
+                    new Point(2, 0)
+                }, Brushes.Cyan);
+
+            TetrisGame.JShape.SetPreviewShape(
+                new[]
+                {
+                    new Point(1, -1),
+                    new Point(-1, 0),
+                    new Point(0, 0),
+                    new Point(1, 0)
+                }, Brushes.Blue);
+            TetrisGame.TShape.SetPreviewShape(
+                new[]
+                {
+                    new Point(0, 0),
+                    new Point(-1, 0),
+                    new Point(0, -1),
+                    new Point(1, 0)
+                }, Brushes.Purple);
+            TetrisGame.LShape.SetPreviewShape(
+                new[]
+                {
+                    new Point(0, -1),
+                    new Point(-1, -1),
+                    new Point(1, -1),
+                    new Point(1, 0)
+                }, Brushes.Orange);
+            TetrisGame.SShape.SetPreviewShape(
+                new[]
+                {
+                    new Point(0, -1),
+                    new Point(0, 0),
+                    new Point(1, -1),
+                    new Point(-1, 0)
+                }, Brushes.Green);
+            TetrisGame.ZShape.SetPreviewShape(
+                new[]
+                {
+                    new Point(0, -1),
+                    new Point(-1, -1),
+                    new Point(0, 0),
+                    new Point(1, 0)
+                }, Brushes.Red);
+            TetrisGame.OShape.SetPreviewShape(
+                new[]
+                {
+                    new Point(0, -1),
+                    new Point(0, 0),
+                    new Point(1, -1),
+                    new Point(1, 0)
+                }, Brushes.Yellow);
         }
 
         public void SetTickSpeed(int milliseconds)
@@ -46,34 +103,26 @@ namespace Tetris
             _timer.Start();
         }
 
+        private int _currLevel = 0;
         private void GameTick(object sender, EventArgs e)
         {
             TetrisGame.ScoreLabel.Content = _myBoard.GetScore().ToString("000000");
             TetrisGame.TopLabel.Content = (int.Parse(TetrisGame.TopLabel.Content.ToString()) > _myBoard.GetScore() ? TetrisGame.TopLabel.Content : _myBoard.GetScore().ToString("000000"));
             TetrisGame.LinesLabel.Content = _myBoard.GetLines().ToString("00");
-            _myBoard.CurrTetraminoMovDown();
-            if (CheckLevelUp())
-                LevelUp(_myBoard.GetLines() % 1 + 1);
-        }
-
-        private bool CheckLevelUp()
-        {
-            var level = int.Parse(TetrisGame.LevelLabel.Content.ToString());
-
-            if (level != _myBoard.GetLines() % 1)
+            if (Convert.ToInt32(TetrisGame.LinesLabel.Content) >= 15)
             {
-                TetrisGame.LevelLabel.Content = (level + 1).ToString("0000000");
-                return true;
+                _currLevel++;
+                TetrisGame.LevelLabel.Content = _currLevel.ToString("000000");
+                LevelUp();
+                TetrisGame.LinesLabel.Content = "00";
             }
-
-            return false;
+            _myBoard.CurrTetraminoMovDown();
         }
 
-        private void LevelUp(int currlevel)
+
+        private void LevelUp()
         {
-            _timer = new DispatcherTimer();
-            _timer.Tick += GameTick;
-            _timer.Interval = new TimeSpan(0, 0, 0, 0, _tickSpeed / (5 + currlevel));
+            _timer.Interval = new TimeSpan(0, 0, 0, 0, _tickSpeed / _currLevel);
         }
 
         private void GameToggle()
@@ -142,6 +191,7 @@ namespace Tetris
         private readonly int _cols;
 
         private Tetramino _currTetramino;
+        private Tetramino _preTetramino;
         private int _linesFilled;
         private readonly Game _myGame;
         private readonly int _rows;
@@ -155,7 +205,10 @@ namespace Tetris
                 int y = (int)pos.Y + (int)_currTetramino.GetCurrPosition().Y + 2;
 
                 if (!Equals(_blockControls[x, y].Background, _noBrush))
+                {
                     _myGame.GameStart();
+
+                }
             }
         }
 
@@ -170,20 +223,23 @@ namespace Tetris
             _blockControls = new Label[_cols, _rows];
 
             for (var i = 0; i < _cols; i++)
-            for (var j = 0; j < _rows; j++)
-            {
-                _blockControls[i, j] = new Label();
-                _blockControls[i, j].Background = _noBrush;
-                _blockControls[i, j].BorderBrush = Brushes.Black;
-                _blockControls[i, j].BorderThickness = new Thickness(1, 1, 1, 1);
-                Grid.SetRow(_blockControls[i, j], j);
-                Grid.SetColumn(_blockControls[i, j], i);
-                tetrisGrid.Children.Add(_blockControls[i, j]);
-            }
+                for (var j = 0; j < _rows; j++)
+                {
+                    _blockControls[i, j] = new Label();
+                    _blockControls[i, j].Background = _noBrush;
+                    _blockControls[i, j].BorderBrush = Brushes.Black;
+                    _blockControls[i, j].BorderThickness = new Thickness(1, 1, 1, 1);
+                    Grid.SetRow(_blockControls[i, j], j);
+                    Grid.SetColumn(_blockControls[i, j], i);
+                    tetrisGrid.Children.Add(_blockControls[i, j]);
+                }
 
-            _currTetramino = new Tetramino();
+            _currTetramino = new Tetramino(_myGame);
+            _preTetramino = new Tetramino(_myGame);
+            _myGame.TetrisGame.NextBlock.Reset();
+            _myGame.TetrisGame.NextBlock.SetPreviewShape(_preTetramino.GetCurrShape(), _preTetramino.GetCurrColor());
+
             CheckDeath();
-
             CurrTetraminoDraw();
         }
 
@@ -331,7 +387,10 @@ namespace Tetris
             {
                 CurrTetraminoDraw();
                 CheckRows();
-                _currTetramino = new Tetramino();
+                _currTetramino = _preTetramino.GetCopy();
+                _preTetramino = new Tetramino(_myGame);
+                _myGame.TetrisGame.NextBlock.Reset();
+                _myGame.TetrisGame.NextBlock.SetPreviewShape(_preTetramino.GetCurrShape(), _preTetramino.GetCurrColor());
                 CheckDeath();
             }
         }
@@ -393,16 +452,31 @@ namespace Tetris
     internal class Tetramino
     {
         private Brush _currColor;
+        private Game _myBoard;
         private Point _currPosition;
         private readonly Point[] _currShape;
         private bool _rotate;
 
 
-        public Tetramino()
+        public Tetramino(Game myBoard)
         {
+            _myBoard = myBoard;
             _currPosition = new Point(0, 2);
             _currColor = Brushes.Transparent;
             _currShape = SetRandomShape();
+        }
+
+        private Tetramino(Brush currColor, Point currPosition, Point[] currShape, bool rotate)
+        {
+            _currColor = currColor;
+            _currPosition = currPosition;
+            _currShape = currShape;
+            _rotate = rotate;
+        }
+
+        public Tetramino GetCopy()
+        {
+            return  new Tetramino(_currColor, _currPosition, _currShape, _rotate);
         }
 
         public Brush GetCurrColor()
@@ -456,6 +530,7 @@ namespace Tetris
                 case 0: // I
                     _rotate = true;
                     _currColor = Brushes.Cyan;
+                    _myBoard.TetrisGame.ILabel.Content = (Convert.ToInt32(_myBoard.TetrisGame.ILabel.Content) + 1).ToString("000000");
                     return new[]
                     {
                         new Point(0, 0),
@@ -467,17 +542,19 @@ namespace Tetris
                 case 1: // J
                     _rotate = true;
                     _currColor = Brushes.Blue;
+                    _myBoard.TetrisGame.JLabel.Content = (Convert.ToInt32(_myBoard.TetrisGame.JLabel.Content) + 1).ToString("000000");
                     return new[]
                     {
-                        new Point(1, 0),
-                        new Point(-1, 1),
-                        new Point(0, 1),
-                        new Point(1, 1)
+                        new Point(1, -1),
+                        new Point(-1, 0),
+                        new Point(0, 0),
+                        new Point(1, 0)
                     };
 
                 case 2: // T
                     _rotate = true;
                     _currColor = Brushes.Purple;
+                    _myBoard.TetrisGame.TLabel.Content = (Convert.ToInt32(_myBoard.TetrisGame.TLabel.Content) + 1).ToString("000000");
                     return new[]
                     {
                         new Point(0, 0),
@@ -489,6 +566,7 @@ namespace Tetris
                 case 3: // L
                     _rotate = true;
                     _currColor = Brushes.Orange;
+                    _myBoard.TetrisGame.LLabel.Content = (Convert.ToInt32(_myBoard.TetrisGame.LLabel.Content) + 1).ToString("000000");
                     return new[]
                     {
                         new Point(0, -1),
@@ -500,6 +578,7 @@ namespace Tetris
                 case 4: // S
                     _rotate = true;
                     _currColor = Brushes.Green;
+                    _myBoard.TetrisGame.SLabel.Content = (Convert.ToInt32(_myBoard.TetrisGame.SLabel.Content) + 1).ToString("000000");
                     return new[]
                     {
                         new Point(0, -1),
@@ -511,6 +590,7 @@ namespace Tetris
                 case 5: // Z
                     _rotate = true;
                     _currColor = Brushes.Red;
+                    _myBoard.TetrisGame.ZLabel.Content =(Convert.ToInt32(_myBoard.TetrisGame.ZLabel.Content) + 1).ToString("000000");
                     return new[]
                     {
                         new Point(0, -1),
@@ -522,6 +602,7 @@ namespace Tetris
                 case 6: // O
                     _rotate = false;
                     _currColor = Brushes.Yellow;
+                    _myBoard.TetrisGame.OLabel.Content = (Convert.ToInt32(_myBoard.TetrisGame.OLabel.Content) + 1).ToString("000000");
                     return new[]
                     {
                         new Point(0, -1),

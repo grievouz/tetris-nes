@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Resources;
 using System.Text;
@@ -24,7 +25,7 @@ namespace Tetris.Controls
 
         private int _rows;
         private int _cols;
-        private Grid[,] _blockControls;
+        private Label[,] _blockControls;
         private bool Shiny = false;
         public new Brush Background;
 
@@ -35,58 +36,28 @@ namespace Tetris.Controls
             _rows = MainGrid.RowDefinitions.Count;
             _cols = MainGrid.ColumnDefinitions.Count;
 
-            _blockControls = new Grid[_cols, _rows];
+            _blockControls = new Label[_cols, _rows];
 
             for (int i = 0; i < _cols; i++)
             {
                 for (int j = 0; j < _rows; j++)
                 {
-                    _blockControls[i, j] = new Grid();
+                    _blockControls[i, j] = new Label();
                     Grid.SetRow(_blockControls[i, j], j);
                     Grid.SetColumn(_blockControls[i, j], i);
                     MainGrid.Children.Add(_blockControls[i, j]);
+                    _blockControls[i, j].BorderBrush = Brushes.Black;
+                    _blockControls[i, j].BorderThickness = new Thickness(1, 1, 1, 1);
                 }
             }
         }
 
-        public void SetColor(Brush backgroundBrush)
+        public void SetPreviewShape(Point[] shape, Brush color)
         {
-            Background = backgroundBrush;
-            MainGrid.Background = backgroundBrush;
-            SetBlocky();
-        }
-
-        public void SetShiny()
-        {
-            Reset();
-
-            if(Shiny)
-                _blockControls[0, 0].Background = Brushes.White;
-
-            _blockControls[1, 1].Background = Brushes.White;
-            _blockControls[1, 2].Background = Brushes.White;
-            _blockControls[2, 1].Background = Brushes.White;
-        }
-
-        public void SetBlocky()
-        {
-            Reset();
-
-            if (Shiny)
-                _blockControls[0, 0].Background = Brushes.White;
-
-            _blockControls[1, 1].Background = Brushes.White;
-            _blockControls[1, 2].Background = Brushes.White;
-            _blockControls[1, 3].Background = Brushes.White;
-
-            _blockControls[2, 1].Background = Brushes.White;
-            _blockControls[2, 2].Background = Brushes.White;
-            _blockControls[2, 3].Background = Brushes.White;
-
-            _blockControls[3, 1].Background = Brushes.White;
-            _blockControls[3, 2].Background = Brushes.White;
-            _blockControls[3, 3].Background = Brushes.White;
-
+            foreach (var point in shape)
+            {
+                _blockControls[(int) point.X + 1, (int) point.Y + 1].Background = color;
+            }
         }
 
         public void Reset()

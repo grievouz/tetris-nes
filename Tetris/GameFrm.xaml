@@ -6,7 +6,7 @@
         xmlns:controls="clr-namespace:Tetris.Controls"
         KeyDown="HandleKeyDown"
         mc:Ignorable="d"
-        Title="Tetriz" Height="960" Width="1280" ResizeMode="NoResize" Icon="images/icon.ico" WindowStartupLocation="CenterScreen">
+        Title="Tetris" Height="480" Width="640" ResizeMode="NoResize" Icon="images/icon.ico" WindowStartupLocation="CenterScreen">
     <Grid Background="Black">
         <controls:TetrisGame x:Name="MainGame"/>
     </Grid>
