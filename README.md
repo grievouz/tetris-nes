@@ -3,7 +3,7 @@ It'a just Tetris nothing more, nothing less. I only uploaded it because it was o
 
 ## Controls
 - Press **W,A,S,D** to **move** the tetromino
- - Press **S** to **restart** the game
+ - Press **R** to **restart** the game
  - Press **P** to **pause** the game
 
 
